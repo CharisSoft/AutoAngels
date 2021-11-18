@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/edittext_backgrouond"
         android:padding="10dp"
+        android:singleLine="true"
         android:layout_margin="15dp"
         android:hint="User Name"
         android:textSize="18sp"
@@ -40,6 +41,7 @@
         android:background="@drawable/edittext_backgrouond"
         android:padding="10dp"
         android:layout_margin="15dp"
+        android:singleLine="true"
         android:hint="Password"
         android:textSize="18sp"
         >
@@ -50,18 +52,19 @@
         android:orientation="horizontal"
         android:layout_margin="20dp">
         <Button
+            android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="LOGIN"
             android:layout_gravity="start"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:layout_weight="0.1"
-            android:drawableLeft="@drawable/login_icon"
             android:background="#17a2b8"
             android:textColor="#FFFFFF">
         </Button>
         <Button
+            android:id="@+id/forgotButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -70,7 +73,7 @@
             android:background="#dc3545"
             android:text="Forgot password"
             android:textColor="#fff"
-            android:textSize="20sp"
+            android:textSize="25sp"
             >
         </Button>
     </LinearLayout>

@@ -1,19 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Hello World!"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progress_blogs_circle"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:progressDrawable="@drawable/drawable_progressbar"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progress_blogs"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:maxHeight="5dip"
+            android:minHeight="5dip"
+            android:progressDrawable="@drawable/drawable_progressbar"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/charispos_image"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/logo"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/splashscreenText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/autoangles"
+                android:textColor="#AF3B49"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/retry_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="40dp"
+                android:background="#2E639D"
+                android:text="@string/retry"
+                android:textColor="#fff"
+                android:textSize="20sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+    <!--    <Button-->
+    <!--        android:id="@+id/fab"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="bottom|end"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--        app:layout_constraintRight_toRightOf="parent" />-->
+    <!--    android:layout_margin="@dimen/fab_margin"-->
+    <!--    app:srcCompat="@drawable/ic_scan"-->
+    <!--    android:contentDescription="@string/pay_ic_desc"-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

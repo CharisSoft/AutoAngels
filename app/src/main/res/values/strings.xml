@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">AutoAngels</string>
+    <string name="oops_internet">OOPS! You need to enable Internet!</string>
+    <string name="Continue">Continue</string>
+    <string name="retry">retry</string>
+    <string name="autoangles">Auto Angles</string>
+
+
 </resources>
