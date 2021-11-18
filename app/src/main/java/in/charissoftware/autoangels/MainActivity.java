@@ -25,7 +25,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
     ImageView imageView;
-    TextView textView;
+//    TextView textView;
     Button retryBtn;
     ProgressBar mProgressBarCircle, mProgressBar;
     //    String url_b2s="https://greensarehealthy.com/b2s/m/index.php";
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         webView = findViewById(R.id.webView);
 //        textViewProgressBar=findViewById(R.id.progressBarMessage);
-        textView = findViewById(R.id.splashscreenText);
+//        textView = findViewById(R.id.splashscreenText);
         imageView = findViewById(R.id.charispos_image);
         retryBtn = findViewById(R.id.retry_button);
 
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 mProgressBar.setVisibility(View.INVISIBLE);
                 mProgressBarCircle.setVisibility(View.INVISIBLE);
 
-                textView.setVisibility(View.INVISIBLE);
+//                textView.setVisibility(View.INVISIBLE);
                 imageView.setVisibility(View.INVISIBLE);
 
             }

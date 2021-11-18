@@ -55,16 +55,16 @@
                 android:src="@drawable/logo"
                 android:visibility="visible" />
 
-            <TextView
-                android:id="@+id/splashscreenText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="@string/autoangles"
-                android:textColor="#AF3B49"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:visibility="visible" />
+<!--            <TextView-->
+<!--                android:id="@+id/splashscreenText"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center_horizontal|center_vertical"-->
+<!--                android:text="@string/autoangles"-->
+<!--                android:textColor="#AF3B49"-->
+<!--                android:textSize="20sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:visibility="visible" />-->
 
             <Button
                 android:id="@+id/retry_button"
