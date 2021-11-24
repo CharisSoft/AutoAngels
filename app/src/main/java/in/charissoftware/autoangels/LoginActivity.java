@@ -1,5 +1,6 @@
 package in.charissoftware.autoangels;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +25,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.auth0.android.jwt.JWT;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,233 +36,102 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
-//    Button buttonLogin;
-//    EditText userName,password;
-//    private static  final String URL="https://charislms.com/autoangels/apilogin.php";
-//    private RequestQueue requestQueue;
-//    private StringRequest stringRequest;
+    Button buttonLogin;
+    EditText userName,password;
+
+    SharedPreferences sharedPreferences;
+    public  static  final  String MY_PREFS_NAME="MYPrefsFileAutoAngles";
+
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-//        buttonLogin=findViewById(R.id.loginButton);
-//        userName=findViewById(R.id.username_autoangel);
-//        password=findViewById(R.id.password_autoangel);
-//        requestQueue= Volley.newRequestQueue(this);
-//
-//        buttonLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//               attemptLogin();
-//
-//            }
-//        });
+        buttonLogin=findViewById(R.id.loginButton);
+        userName=findViewById(R.id.username_autoangel);
+        password=findViewById(R.id.password_autoangel);
 
-//        buttonLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                stringRequest=new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            JSONObject jsonObject = new JSONObject(response);
-//                            if (jsonObject.names().get(1).equals("isSuccess")) {
-//
-//                                Toast.makeText(getApplicationContext(), jsonObject.getString("sucess"), Toast.LENGTH_SHORT).show();
-//                            } else {
-//                                Toast.makeText(getApplicationContext(), "Error ", Toast.LENGTH_SHORT).show();
-//
-//                            }
-//
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//
-//                    }
-//                })
-//                {
-//                    @Override
-//                    protected Map<String,String> getParams(){
-//                        HashMap<String, String> hashMap = new HashMap<>();
-//                            hashMap.put("username",userName.getText().toString());
-//                            hashMap.put("password",password.getText().toString());
-//                            return  hashMap;
-//
-//                    }
-//
-//                };
-//                requestQueue.add(stringRequest);
-////                requestQueue.getCache().clear();
-////                Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-////                startActivity(intent);
-//            }
-//        });
+        sharedPreferences=getSharedPreferences(MY_PREFS_NAME,Context.MODE_PRIVATE);
+
+
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postDataUsingVolley(userName.getText().toString(),password.getText().toString());
+
+            }
+        });
 
     }
-//    private  void attemptLogin(){
-//
-//        userName.setError(null);
-//        password.setError(null);
-//        String email1 = userName.getText().toString();
-//        String password1 = password.getText().toString();
-//
-//        boolean cancel = false;
-//        View focusView = null;
-//
-//        // Check for a valid Password, if the user entered one.
-//        if (TextUtils.isEmpty(password1)) {
-//            password.setError("Enter password");
-//
-//            focusView = password;
-//            cancel = true;
-//        } else if (!isPasswordValid(password1)) {
-//            password.setError("Enter valid password");
-//            focusView = password;
-//            cancel = true;
-//        }
-//
-//        // Check for a valid email address.
-//        if (TextUtils.isEmpty(email1)) {
-//            userName.setError("Enter email");
-//            focusView = userName;
-//            cancel = true;
-//        } else if (!isEmailValid(email1)) {
-//            userName.setError("Enter valid email");
-//            focusView = userName;
-//            cancel = true;
-//        }
-//
-//        if (cancel) {
-//            // There was an error; don't attempt login and focus the first
-//            // form field with an error.
-//            userName.requestFocus();
-//            password.requestFocus();
-////            focusView.requestFocus();
-//        } else {
-//        if (isNetworkAvailable()) {
-//            String urlAPILogin = "https://charislms.com/autoangels/apilogin.php";
-//
-//            LoginTask userLoginTask = new LoginTask(this);
-//            userLoginTask.execute(urlAPILogin, email1, password1);
-////                showProgress(true);
-//
-////            progressBar.setVisibility(View.VISIBLE);
-//        } else {
-//            Toast.makeText(this,
-//                    "No active Internet connection found, " +
-//                            "Please try again.", Toast.LENGTH_SHORT).show();
-////            progressBar.setVisibility(View.INVISIBLE);
-////                showProgress(false);
-//        }
-//
-//        }
-//    }
-//    public boolean isNetworkAvailable() {
-//
-//        ConnectivityManager connectivityManager;
-//
-//        connectivityManager =
-//                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-//
-//        NetworkInfo activeNetworkInfo =
-//                Objects.requireNonNull(connectivityManager).getActiveNetworkInfo();
-//
-//        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-//    }
-//        private boolean isPasswordValid(String password) {
-//            //length should not be less than 4
-//            return password.length() > 4;
-//        }
-//    private boolean isEmailValid(String email) {
-//        String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
-//                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-//
-//        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-//        Matcher matcher = pattern.matcher(email);
-//        return matcher.matches();
-//    }
-//
-//    @Override
-//    public void onTaskComplete(JSONObject jsonObject) {
-//        String token = null;
-//        System.out.println(jsonObject.toString());
-//
-//        String userLName = "", userMName = "", userEmail = "";
-//
-//        try {
-//            token = jsonObject.getString("access_token");
-//
-//            JWT jwt = null;
-//            if (token != null) {
-//                jwt = new JWT(token);
-//            }
-//
-//            String userFName = null;
-//            if (jwt != null) {
-//                userFName = (jwt.getClaim("firstname")).asString();
-//                userLName = (jwt.getClaim("lastname")).asString();
-//                userMName = (jwt.getClaim("middlename")).asString();
-//                userEmail = (jwt.getClaim("name")).asString();
-//            }
-//            Utils.setUserEmail(userEmail);
-//            Utils.setUserFName(userFName);
-//            Utils.setUserMName(userMName);
-//            Utils.setUserLName(userLName);
-//            Utils.setUserValid(true);
-//
-//            // Create Share Preference to store login credentials:
-//
-//            SharedPreferences prefs
-//                    = Armadillo.create(this, Utils.getSpFile())
-//                    .encryptionFingerprint(this)
-//                    .enableKitKatSupport(true) //enable optional kitkat support
-//                    .build();
-//
-//            SharedPreferences.Editor Ed = prefs.edit();
-//
-//            Ed.putString("userEmail", Utils.getUserEmail());
-//            Ed.putString("userPassword", Utils.getUserPassword());
-//            Ed.putString("userFName", Utils.getUserFName());
-//            Ed.putString("userLName", Utils.getUserLName());
-//            Ed.putString("userMName", Utils.getUserMName());
-//            Ed.putBoolean("userValid", Utils.isUserValid());
-//
-//            Ed.apply();
-//
-//            SharedPreferences   sharedPreferences=getSharedPreferences("isDemoUserPreferences",MODE_PRIVATE);
-//            SharedPreferences.Editor myEdit = sharedPreferences.edit();
-//            myEdit.putBoolean("isDemoUser", false);
-//            myEdit.apply();
-//            myEdit.commit();
-//            // Start the main activity
-//            startActivity(new Intent(this, HomeActivity.class));
-//
-//        } catch (NullPointerException e) {
-////            Log.d("onTaskComplete");
-////            Crashlytics.log(Log.DEBUG, "tag", e.getMessage());
-//
-//        } catch (JSONException e) {
-////            Log.d("onTaskComplete: =");
-////            Crashlytics.log(Log.DEBUG, "tag", e.getMessage());
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-////            Crashlytics.log(Log.DEBUG, "tag", e.getMessage());
-//            Toast.makeText(this, "Unable to save login details.",
-//                    Toast.LENGTH_SHORT).show();
-//        }
-//
-//    }
-//
-//    @Override
-//    public void onTaskComplete(String error) {
-//        Toast.makeText(this, "Credentials Are Wrong!", Toast.LENGTH_SHORT).show();
-//
-//    }
+
+    private  void postDataUsingVolley(String name,String password1 ){
+        String url="https://charislms.com/autoangels/apilogin.php";
+        RequestQueue queue=Volley.newRequestQueue(LoginActivity.this);
+        StringRequest request=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @SuppressLint("LogNotTimber")
+            @Override
+            public void onResponse(String response) {
+                userName.setText("");
+                password.setText("");
+                //Toast.makeText(LoginActivity.this, "Data added to api", Toast.LENGTH_LONG).show();
+                try {
+                    SharedPreferences.Editor editor=sharedPreferences.edit();
+                    JSONObject resobj = new JSONObject(response);
+                    Log.d("TAG", String.valueOf(resobj));
+
+
+                    String bool=resobj.getString("isSuccess");
+                    Log.d("TAG BOO",bool);
+
+                    if (bool.equals("true")){
+                        JSONArray jsonArray=resobj.getJSONArray("result");
+
+                        for (int i=0;i<jsonArray.length();i++){
+                            JSONObject jsonObject=jsonArray.getJSONObject(i);
+                            String id1=jsonObject.getString("id");
+                            editor.putString("autoanglesid",id1);
+                            Log.d("TAG ID",id1);
+                            String name2=jsonObject.getString("name");
+                            editor.putString("autoanglesname",name2);
+                            Log.d("TAG NAME",name2);
+                            String url1=jsonObject.getString("url");
+                            editor.putString("autoanglesurl",url1);
+                            Log.d("TAG URL",url1);
+                            editor.apply();
+
+                        }
+                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        Toast.makeText(LoginActivity.this, "SUCCESS GETTING ", Toast.LENGTH_SHORT).show();
+
+                    }
+                    else {
+                        Toast.makeText(LoginActivity.this, "ERROR GETTING ", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                    catch (JSONException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(LoginActivity.this, "Fail to get response = " + error, Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", name);
+                params.put("password", password1);
+                return  params;
+            }
+        };
+queue.add(request);
+    }
+
+
+
+
 }

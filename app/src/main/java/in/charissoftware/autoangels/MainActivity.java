@@ -2,8 +2,10 @@ package in.charissoftware.autoangels;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -24,14 +26,15 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
-    ImageView imageView;
-//    TextView textView;
+//    ImageView imageView;
     Button retryBtn;
     ProgressBar mProgressBarCircle, mProgressBar;
-    //    String url_b2s="https://greensarehealthy.com/b2s/m/index.php";
     TextView textViewProgressBar;
     private WebView webView;
-
+    public  static  final  String MY_PREFS_NAME="MYPrefsFileAutoAngles";
+    SharedPreferences sharedPreferences;
+    String autoangelsUrl;
+    @SuppressLint("LogNotTimber")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +43,17 @@ public class MainActivity extends AppCompatActivity {
         webView = findViewById(R.id.webView);
 //        textViewProgressBar=findViewById(R.id.progressBarMessage);
 //        textView = findViewById(R.id.splashscreenText);
-        imageView = findViewById(R.id.charispos_image);
+//        imageView = findViewById(R.id.charispos_image);
         retryBtn = findViewById(R.id.retry_button);
+        sharedPreferences=getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+        if (sharedPreferences.getString("autoanglesurl",String.valueOf(0))!=null){
+            autoangelsUrl=sharedPreferences.getString("autoanglesurl",String.valueOf(0));
+            Log.d("AUTOANGELS URL",autoangelsUrl);
+
+        }else {
+            Log.d("ERROR","AUTOANGELS URL NOT FOUND");
+            return;
+        }
 
 //        Log.d("TAG", "MAIN ACTITY");
 
@@ -63,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadPage() {
         if (isNetworkAvaliable()) {
-            webView.loadUrl("https://charislms.com/autoangels/tech/index.php");
+            webView.loadUrl(autoangelsUrl);
             retryBtn.setVisibility(View.INVISIBLE);
         } else {
             retryBtn.setVisibility(View.VISIBLE);
@@ -128,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+            @SuppressLint("LogNotTimber")
             @Override
             public void onPageFinished(WebView view, String url) {
                 Log.d("WebView", "your current url when webpage loading.. finish" + url);
@@ -137,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 mProgressBarCircle.setVisibility(View.INVISIBLE);
 
 //                textView.setVisibility(View.INVISIBLE);
-                imageView.setVisibility(View.INVISIBLE);
+//                imageView.setVisibility(View.INVISIBLE);
 
             }
 
