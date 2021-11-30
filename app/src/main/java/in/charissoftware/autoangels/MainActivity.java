@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     public  static  final  String MY_PREFS_NAME="MYPrefsFileAutoAngles";
     SharedPreferences sharedPreferences;
     String autoangelsUrl;
+    String autoAngelsLogoutUrl;
     @SuppressLint("LogNotTimber")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,22 @@ public class MainActivity extends AppCompatActivity {
         }else {
             Log.d("ERROR","AUTOANGELS URL NOT FOUND");
             return;
+        }
+        if (sharedPreferences.getString("autoangelslogout",String.valueOf(0))!=null){
+            autoAngelsLogoutUrl=sharedPreferences.getString("autoangelslogout",String.valueOf(0));
+            Log.d("AUTOANGELS LOGOUTURL",autoAngelsLogoutUrl);
+
+        }else {
+            Log.d("ERROR","AUTOANGELS LOGOUT  URL NOT FOUND");
+            return;
+
+        }
+
+        if (saveSharedPrefernces.getLoggedStatus(getApplicationContext())) {
+            saveSharedPrefernces.setLoggedIn(getApplicationContext(), true);
+        } else {
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
         }
 
 //        Log.d("TAG", "MAIN ACTITY");
@@ -132,6 +149,13 @@ public class MainActivity extends AppCompatActivity {
                 super.onPageStarted(view, url, favicon);
                 mProgressBarCircle.setVisibility(View.VISIBLE);
                 mProgressBar.setVisibility(View.VISIBLE);
+                if (url.equals(autoAngelsLogoutUrl)){
+                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                    saveSharedPrefernces.setLoggedIn(getApplicationContext(), false);
+
+                    startActivity(i);
+                }
+
                 if (!isNetworkAvaliable()) {
                     webView.setVisibility(View.GONE);
                     Intent intent = new Intent(getApplicationContext(), ErrorActivity.class);

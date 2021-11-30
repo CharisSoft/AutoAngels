@@ -38,10 +38,9 @@ import java.util.regex.Pattern;
 public class LoginActivity extends AppCompatActivity {
     Button buttonLogin;
     EditText userName,password;
-
     SharedPreferences sharedPreferences;
     public  static  final  String MY_PREFS_NAME="MYPrefsFileAutoAngles";
-
+//  boolean isDemoUser;
 
 
     @Override
@@ -53,12 +52,23 @@ public class LoginActivity extends AppCompatActivity {
         password=findViewById(R.id.password_autoangel);
 
         sharedPreferences=getSharedPreferences(MY_PREFS_NAME,Context.MODE_PRIVATE);
-
-
+//       isDemoUser=sharedPreferences.getBoolean("iSDEMOUSER",true);
+        if (saveSharedPrefernces.getLoggedStatus(getApplicationContext())) {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(), "Please Login ", Toast.LENGTH_SHORT).show();
+        }
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postDataUsingVolley(userName.getText().toString(),password.getText().toString());
+                if (isNetworkAvaliable()){
+                    postDataUsingVolley(userName.getText().toString(),password.getText().toString());
+
+                }else {
+                    Toast.makeText(getApplicationContext(), "No Internet connection found! Please retry.", Toast.LENGTH_SHORT).show();
+
+                }
 
             }
         });
@@ -98,15 +108,20 @@ public class LoginActivity extends AppCompatActivity {
                             String url1=jsonObject.getString("url");
                             editor.putString("autoanglesurl",url1);
                             Log.d("TAG URL",url1);
+                            String logoutUrl=jsonObject.getString("logout");
+                            editor.putString("autoangelslogout",logoutUrl);
+                         //   editor.putBoolean("iSDEMOUSER",true);
                             editor.apply();
 
                         }
                         startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                        Toast.makeText(LoginActivity.this, "SUCCESS GETTING ", Toast.LENGTH_SHORT).show();
+                        saveSharedPrefernces.setLoggedIn(getApplicationContext(), true);
+
+                        Toast.makeText(LoginActivity.this, "LOGIN DETAILS ARE VALID ", Toast.LENGTH_SHORT).show();
 
                     }
                     else {
-                        Toast.makeText(LoginActivity.this, "ERROR GETTING ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "INVALID LOGIN DETAILS ", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -131,7 +146,12 @@ public class LoginActivity extends AppCompatActivity {
 queue.add(request);
     }
 
+    public boolean isNetworkAvaliable() {
 
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
+    }
 
 
 }

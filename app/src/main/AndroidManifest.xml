@@ -21,8 +21,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".ErrorActivity"/>
+        <activity android:name=".MainActivity"
+            android:noHistory="true"/>
+        <activity android:name=".ErrorActivity"
+            android:noHistory="true"/>
     </application>
 
 </manifest>
